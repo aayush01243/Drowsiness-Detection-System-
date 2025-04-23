@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drowsiness Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        /* Main container for video feed and controls */
+        .content-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        /* Style the video frame */
+        .video-container {
+            flex-shrink: 0;
+        }
+
+        .video-frame {
+            max-width: 640px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+        }
+
+        /* Controls styling */
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .controls button {
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            color: rgb(34, 30, 30);
+        }
+
+        .controls button:nth-child(1) {
+            background-color: #4CAF50;
+        }
+
+        .controls button:nth-child(2) {
+            background-color: #f44336;
+        }
+
+        .controls button:nth-child(3) {
+            background-color: #2196F3;
+        }
+
+        .controls button:nth-child(4) {
+            background-color: #ff9800;
+        }
+
+        /* Hover effect */
+        .controls button:hover {
+            transform: scale(1.05);
+            filter: brightness(1.2);
+        }
+
+        /* Active effect */
+        .controls button:active {
+            transform: scale(0.95);
+            filter: brightness(0.9);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- <h1>Drowsiness Detection System</h1> -->
+
+        <!-- Content container for video and controls side by side -->
+        <div class="content-container">
+            <div class="video-container">
+                <img src="{{ url_for('video_feed') }}" alt="Video Feed" class="video-frame">
+            </div>
+
+            <!-- Controls beside video feed -->
+            <div class="controls">
+                <h1>Drowsiness Detection System</h1>
+                <button onclick="adjustContrast(0.1)">Increase Contrast</button>
+                <button onclick="adjustContrast(-0.1)">Decrease Contrast</button>
+                <button onclick="adjustBrightness(10)">Increase Brightness</button>
+                <button onclick="adjustBrightness(-10)">Decrease Brightness</button>
+            </div>
+        </div>
+
+        <div id="message" class="message"></div>
+    </div>
+
+    <script>
+        const messageDiv = document.getElementById('message');
+
+        function updateMessage(text, type) {
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type}`;
+        }
+
+        function adjustContrast(value) {
+            fetch(`/adjust_contrast?value=${value}`, { method: 'POST' });
+        }
+
+        function adjustBrightness(value) {
+            fetch(`/adjust_brightness?value=${value}`, { method: 'POST' });
+        }
+    </script>
+</body>
+
+</html>
